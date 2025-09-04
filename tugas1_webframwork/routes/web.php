@@ -24,10 +24,10 @@ Route::middleware([
 });
 
 Route::get('/about', function () {
-    return view('about');
+    return "Ini halaman About";
 })->name('about');
 
-// Route Contact
+
 Route::get('/contact', function () {
     return "Ini halaman Contact";
 })->name('contact');
@@ -43,14 +43,33 @@ Route::get('/user/{id}', function ($id) {
 
 Route::prefix('manager')->group(function () {
 
-    // Route untuk dashboard admin
+    
     Route::get('/edit', function () {
         return 'halaman edit';
     });
 
-    // Route untuk profil admin
+    
 
 });
+
+use App\Http\Controllers\PageController;
+
+
+Route::get('/greeting', [PageController::class, 'greeting']);
+
+
+Route::get('/user/{id}', [PageController::class, 'user']);
+
+
+Route::get('/profile/{name?}', [PageController::class, 'profile']);
+
+
+Route::get('/about', [PageController::class, 'about'])->name('about');
+Route::get('/contact', [PageController::class, 'contact'])->name('contact');
+
+
+Route::get('/posts', [PageController::class, 'posts']);
+
 
 
 
