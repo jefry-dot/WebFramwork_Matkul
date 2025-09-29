@@ -5,7 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ProductController;
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('barang');
 });
 
 Route::get('/dashboard', function () {
@@ -23,6 +23,12 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified', 'RoleCheck:admin'])->name('dashboard');
 Route::resource('products', ProductController::class);
+Route::get('/barang', function () {
+    return view('barang');
+});
 
+Route::get('/langganan', function () {
+    return view('langganan');
+});
 
 require __DIR__.'/auth.php';
