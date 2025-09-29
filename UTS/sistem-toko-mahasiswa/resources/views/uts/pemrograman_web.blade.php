@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Menu UTS Pemrograman Web</title>
-</head>
-<body>
-    <h1>Menu UTS Pemrograman Web</h1>
-    <a href="{{ route('uts.index') }}">Kembali ke Halaman Utama</a>
-</body>
-</html>
+@extends('layouts.app')
+
+@section('title', 'Menu UTS Pemrograman Web')
+
+@section('content')
+    <h2>Menu UTS Pemrograman Web</h2>
+    <p>Halaman ini khusus untuk UTS Pemrograman Web.</p>
+@endsection

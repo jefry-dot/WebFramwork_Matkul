@@ -1,10 +1,8 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Menu UTS Database</title>
-</head>
-<body>
-    <h1>Menu UTS Database</h1>
-    <a href="{{ route('uts.index') }}">Kembali ke Halaman Utama</a>
-</body>
-</html>
+@extends('layouts.app')
+
+@section('title', 'Menu UTS Database')
+
+@section('content')
+    <h2>Menu UTS Database</h2>
+    <p>Halaman ini khusus untuk UTS Database.</p>
+@endsection
