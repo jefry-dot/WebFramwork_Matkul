@@ -4,21 +4,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-class UtsController extends Controller
+class UTSController extends Controller
 {
-    // Menampilkan halaman utama uts
     public function index()
     {
-        return view('uts.index'); // akan kita buat nanti
+        return view('uts.index');
     }
 
-    // Menampilkan menu pemrograman web
-    public function pemrogramanWeb()
+    public function web()
     {
         return view('uts.pemrograman_web');
     }
 
-    // Menampilkan menu database
     public function database()
     {
         return view('uts.database');

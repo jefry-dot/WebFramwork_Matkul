@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@yield('title') - UTS Project</title>
+    
+    <!-- Styles -->
     <style>
         :root {
             --primary: #3498db;
@@ -151,6 +153,58 @@
             transform: translateY(-2px);
         }
 
+        .user-menu {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-left: 20px;
+        }
+
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            background-color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .user-name {
+            color: white;
+            font-weight: 500;
+        }
+
+        .logout-form {
+            display: inline;
+        }
+
+        .btn-logout {
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            padding: 6px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-weight: 500;
+            transition: var(--transition);
+            cursor: pointer;
+            font-size: 0.9rem;
+        }
+
+        .btn-logout:hover {
+            background-color: white;
+            color: var(--accent);
+        }
+
         /* Main Content Styles */
         main {
             flex: 1;
@@ -291,6 +345,26 @@
             color: white;
         }
 
+        /* Alert Styles */
+        .alert {
+            padding: 15px 20px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-color: var(--success);
+            color: #155724;
+        }
+
+        .alert-error {
+            background-color: #f8d7da;
+            border-color: var(--accent);
+            color: #721c24;
+        }
+
         /* Responsive Styles */
         @media (max-width: 768px) {
             .header-content {
@@ -309,9 +383,14 @@
                 flex-wrap: wrap;
             }
             
-            .auth-buttons {
+            .auth-buttons, .user-menu {
                 margin-left: 0;
                 margin-top: 10px;
+            }
+            
+            .user-menu {
+                flex-direction: column;
+                gap: 10px;
             }
             
             .page-header h2 {
@@ -324,6 +403,8 @@
             }
         }
     </style>
+    
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
 <body>
     <!-- Header -->
@@ -334,17 +415,39 @@
                     <div class="logo-icon">📚</div>
                     <h1>UTS Project</h1>
                 </div>
-                <nav>
-                    <ul>
-                        <li><a href="{{ route('uts.index') }}" class="{{ request()->routeIs('uts.index') ? 'active' : '' }}">Home</a></li>
-                        <li><a href="{{ route('uts.web') }}" class="{{ request()->routeIs('uts.web') ? 'active' : '' }}">Pemrograman Web</a></li>
-                        <li><a href="{{ route('uts.database') }}" class="{{ request()->routeIs('uts.database') ? 'active' : '' }}">Database</a></li>
-                    </ul>
-                    <div class="auth-buttons">
-                        <a href="#" class="btn-login">Login</a>
-                        <a href="#" class="btn-daftar">Daftar</a>
-                    </div>
-                </nav>
+ <nav>
+    <ul>
+        <li><a href="{{ route('uts.index') }}" class="{{ request()->routeIs('uts.index') ? 'active' : '' }}">Home</a></li>
+        
+        @auth
+            <li><a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a></li>
+        @endauth
+        
+        <li><a href="{{ route('uts.web') }}" class="{{ request()->routeIs('uts.web') ? 'active' : '' }}">Pemrograman Web</a></li>
+        <li><a href="{{ route('uts.database') }}" class="{{ request()->routeIs('uts.database') ? 'active' : '' }}">Database</a></li>
+    </ul>
+    
+    <!-- Authentication Links -->
+    @auth
+        <div class="user-menu">
+            <div class="user-info">
+                <div class="user-avatar">
+                    {{ strtoupper(substr(Auth::user()->name, 0, 1)) }}
+                </div>
+                <span class="user-name">{{ Auth::user()->name }}</span>
+            </div>
+            <form method="POST" action="{{ route('logout') }}" class="logout-form">
+                @csrf
+                <button type="submit" class="btn-logout">Logout</button>
+            </form>
+        </div>
+    @else
+        <div class="auth-buttons">
+            <a href="{{ route('login') }}" class="btn-login">Login</a>
+            <a href="{{ route('register') }}" class="btn-daftar">Daftar</a>
+        </div>
+    @endauth
+</nav>
             </div>
         </div>
     </header>
@@ -352,6 +455,23 @@
     <!-- Main Content -->
     <main>
         <div class="container">
+            <!-- Alert Messages -->
+            @if(session('status'))
+                <div class="alert alert-success">
+                    {{ session('status') }}
+                </div>
+            @endif
+            
+            @if($errors->any())
+                <div class="alert alert-error">
+                    <ul style="margin: 0; padding-left: 20px;">
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+            
             @yield('content')
         </div>
     </main>
