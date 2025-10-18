@@ -70,9 +70,10 @@
                         </div>
                     </div>
                     
-                    <div class="course-actions">
-                        <a href="{{ route('dashboard.courses.show', $course['id']) }}" class="btn-continue">Lanjutkan Belajar</a>
-                    </div>
+                    {{-- Di bagian course cards, cari tombol "Lanjutkan Belajar" --}}
+<div class="course-actions">
+    <a href="{{ route('dashboard.courses.show', $course['id']) }}" class="btn-continue">Lanjutkan Belajar</a>
+</div>  
                 </div>
             </div>
             @endforeach

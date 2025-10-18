@@ -103,95 +103,65 @@
     </section>
 
     <!-- Courses Section -->
-    <section class="courses-section">
-        <div class="section-header">
-            <h2>Mata Kuliah Tersedia</h2>
-            <p>Pilih mata kuliah yang ingin Anda pelajari</p>
-        </div>
-        <div class="courses-grid">
-            <div class="course-card large">
-                <div class="course-header web">
-                    <div class="course-badge">Populer</div>
-                    <div class="course-icon">🌐</div>
-                    <h3>Pemrograman Web</h3>
-                    <p>Master the art of web development</p>
-                </div>
-                <div class="course-content">
-                    <ul class="course-topics">
-                        <li>✅ HTML5 & Semantic Web</li>
-                        <li>✅ CSS3 & Responsive Design</li>
-                        <li>✅ JavaScript Fundamentals</li>
-                        <li>✅ DOM Manipulation</li>
-                        <li>✅ PHP & Laravel Basics</li>
-                        <li>✅ RESTful APIs</li>
-                    </ul>
-                    <div class="course-meta">
-                        <div class="meta-item">
-                            <span class="meta-icon">📖</span>
-                            <span>12 Modul</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-icon">⏰</span>
-                            <span>8 Minggu</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-icon">🎯</span>
-                            <span>50+ Soal</span>
-                        </div>
-                    </div>
-                    <div class="course-actions">
-                        <a href="{{ route('uts.web') }}" class="btn btn-outline">Jelajahi Materi</a>
-                        @auth
-                            <a href="{{ route('dashboard') }}" class="btn btn-primary">Mulai Belajar</a>
-                        @else
-                            <a href="{{ route('register') }}" class="btn btn-primary">Daftar Sekarang</a>
-                        @endauth
-                    </div>
-                </div>
+  <!-- Courses Section -->
+<section class="courses-section">
+    <div class="section-header">
+        <h2>Mata Kuliah Tersedia</h2>
+        <p>Pilih mata kuliah yang ingin Anda pelajari</p>
+    </div>
+    <div class="courses-grid">
+        @foreach($featuredCourses as $course)
+        <div class="course-card large">
+            <div class="course-header {{ $course->color }}">
+                @if($course->is_featured)
+                <div class="course-badge">Featured</div>
+                @endif
+                <div class="course-icon">{{ $course->icon }}</div>
+                <h3>{{ $course->title }}</h3>
+                <p>{{ $course->short_description }}</p>
             </div>
-
-            <div class="course-card large">
-                <div class="course-header database">
-                    <div class="course-badge">Essential</div>
-                    <div class="course-icon">🗃️</div>
-                    <h3>Database Management</h3>
-                    <p>Master database design and implementation</p>
-                </div>
-                <div class="course-content">
-                    <ul class="course-topics">
-                        <li>✅ Konsep Database & SQL</li>
-                        <li>✅ Normalisasi & ERD</li>
-                        <li>✅ Query Optimization</li>
-                        <li>✅ Transaction Management</li>
-                        <li>✅ NoSQL Fundamentals</li>
-                        <li>✅ Database Security</li>
-                    </ul>
-                    <div class="course-meta">
-                        <div class="meta-item">
-                            <span class="meta-icon">📖</span>
-                            <span>10 Modul</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-icon">⏰</span>
-                            <span>6 Minggu</span>
-                        </div>
-                        <div class="meta-item">
-                            <span class="meta-icon">🎯</span>
-                            <span>40+ Soal</span>
-                        </div>
+            <div class="course-content">
+                <p>{{ $course->description }}</p>
+                
+                @if($course->topics)
+                <ul class="course-topics">
+                    @foreach($course->topics as $topic)
+                    <li>✅ {{ $topic }}</li>
+                    @endforeach
+                </ul>
+                @endif
+                
+                <div class="course-meta">
+                    <div class="meta-item">
+                        <span class="meta-icon">📖</span>
+                        <span>{{ $course->total_lessons }} Modul</span>
                     </div>
-                    <div class="course-actions">
-                        <a href="{{ route('uts.database') }}" class="btn btn-outline">Jelajahi Materi</a>
-                        @auth
-                            <a href="{{ route('dashboard') }}" class="btn btn-primary">Mulai Belajar</a>
-                        @else
-                            <a href="{{ route('register') }}" class="btn btn-primary">Daftar Sekarang</a>
-                        @endauth
+                    <div class="meta-item">
+                        <span class="meta-icon">⏰</span>
+                        <span>{{ $course->duration_weeks }} Minggu</span>
+                    </div>
+                    <div class="meta-item">
+                        <span class="meta-icon">🎯</span>
+                        <span>{{ $course->total_quizzes }}+ Soal</span>
                     </div>
                 </div>
+                <div class="course-actions">
+    @if($course->slug == 'pemrograman-web')
+        <a href="{{ route('uts.web') }}" class="btn btn-outline">Jelajahi Materi</a>
+    @else
+        <a href="{{ route('uts.database') }}" class="btn btn-outline">Jelajahi Materi</a>
+    @endif
+    @auth
+        <a href="{{ route('dashboard.courses.show', $course->id) }}" class="btn btn-primary">Mulai Belajar</a> <!-- SUDAH BENAR -->
+    @else
+        <a href="{{ route('register') }}" class="btn btn-primary">Daftar Sekarang</a>
+    @endauth
+</div>
             </div>
         </div>
-    </section>
+        @endforeach
+    </div>
+</section>
 
     <!-- CTA Section -->
     <section class="cta-section">

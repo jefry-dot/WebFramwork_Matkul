@@ -415,12 +415,16 @@
                     <div class="logo-icon">📚</div>
                     <h1>UTS Project</h1>
                 </div>
- <nav>
+<nav>
     <ul>
         <li><a href="{{ route('uts.index') }}" class="{{ request()->routeIs('uts.index') ? 'active' : '' }}">Home</a></li>
         
         @auth
-            <li><a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a></li>
+            <li><a href="{{ route('dashboard') }}" class="{{ request()->routeIs('dashboard') ? 'active' : '' }}">Dashboard</a></li> <!-- SUDAH BENAR -->
+            
+            @if(Auth::user()->is_admin)
+                <li><a href="{{ route('admin.dashboard') }}" class="{{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">Admin</a></li>
+            @endif
         @endauth
         
         <li><a href="{{ route('uts.web') }}" class="{{ request()->routeIs('uts.web') ? 'active' : '' }}">Pemrograman Web</a></li>

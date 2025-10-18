@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Product;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
     public function index()
     {
-        return view('products.index');
+        $products = Product::all();
+        return view('products.index', compact('products'));
     }
 
     public function create()
@@ -18,54 +20,48 @@ class ProductController extends Controller
 
     public function store(Request $request)
     {
-        // Validasi dan penyimpanan data
-        $validated = $request->validate([
-            'name' => 'required|max:255',
-            'description' => 'nullable',
+        $request->validate([
+            'product_name' => 'required|string|max:255',
+            'unit' => 'required|string|max:50',
+            'type' => 'required|string|max:255',
+            'information' => 'required|string',
+            'qty' => 'required|integer|min:0',
+            'producer' => 'required|string|max:255',
         ]);
 
-        // Simpan data ke database
-        // Product::create($validated);
+        Product::create($request->all());
 
         return redirect()->route('products.index')
-            ->with('success', 'Produk berhasil dibuat.');
+            ->with('success', 'Product created successfully.');
     }
 
-    public function show($id)
+    public function edit(Product $product)
     {
-        // $product = Product::findOrFail($id);
-        // return view('products.show', compact('product'));
-        return view('products.show', ['id' => $id]);
+        return view('products.edit', compact('product'));
     }
 
-    public function edit($id)
+    public function update(Request $request, Product $product)
     {
-        // $product = Product::findOrFail($id);
-        // return view('products.edit', compact('product'));
-        return view('products.edit', ['id' => $id]);
-    }
-
-    public function update(Request $request, $id)
-    {
-        // Validasi dan update data
-        $validated = $request->validate([
-            'name' => 'required|max:255',
-            'description' => 'nullable',
+        $request->validate([
+            'product_name' => 'required|string|max:255',
+            'unit' => 'required|string|max:50',
+            'type' => 'required|string|max:255',
+            'information' => 'required|string',
+            'qty' => 'required|integer|min:0',
+            'producer' => 'required|string|max:255',
         ]);
 
-        // $product = Product::findOrFail($id);
-        // $product->update($validated);
+        $product->update($request->all());
 
         return redirect()->route('products.index')
-            ->with('success', 'Produk berhasil diperbarui.');
+            ->with('success', 'Product updated successfully.');
     }
 
-    public function destroy($id)
+    public function destroy(Product $product)
     {
-        // $product = Product::findOrFail($id);
-        // $product->delete();
+        $product->delete();
 
         return redirect()->route('products.index')
-            ->with('success', 'Produk berhasil dihapus.');
+            ->with('success', 'Product deleted successfully.');
     }
 }
